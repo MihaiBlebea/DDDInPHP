@@ -13,7 +13,8 @@ use App\Domain\Money\{
 use App\Domain\User\{
     User,
     AgeRange,
-    Password
+    Password,
+    Email
 };
 
 // PostRepo::savePost(Post::createWith('Ferrari', 'Michael Schumacher'));
@@ -38,5 +39,5 @@ use App\Domain\User\{
 // // var_dump($new_price->withMoneySign());
 // var_dump($new_price);
 
-$user = new User('Mihai', 'Blebea', 'mihaiserban.blebea@gmail.com', new AgeRange(28), new Password('intrex007'));
+$user = new User('Mihai', 'Blebea', new Email('mihaiserban.blebea@gmail.com'), new AgeRange(28), new Password('intrex007'), new Username('Serban', 'Blebea'));
 var_dump($user);
