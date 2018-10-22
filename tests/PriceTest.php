@@ -9,6 +9,9 @@ use App\Domain\Money\{
 
 class PriceTest extends TestCase
 {
+    private $currency_pound;
+
+    
     protected function setUp()
     {
         $this->currency_pound = new Currency('£', 'GBP');
