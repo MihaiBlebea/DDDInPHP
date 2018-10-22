@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use App\Domain\User\AgeRange;
+use App\Domain\User\Exceptions\InvalidAgeRangeException;
 
 
 class AgeRangeTest extends TestCase

@@ -12,7 +12,8 @@ use App\Domain\Money\{
 };
 use App\Domain\User\{
     User,
-    AgeRange
+    AgeRange,
+    Password
 };
 
 // PostRepo::savePost(Post::createWith('Ferrari', 'Michael Schumacher'));
@@ -36,3 +37,6 @@ use App\Domain\User\{
 // // var_dump($new_price->isGreaterThen($post_price));
 // // var_dump($new_price->withMoneySign());
 // var_dump($new_price);
+
+$user = new User('Mihai', 'Blebea', 'mihaiserban.blebea@gmail.com', new AgeRange(28), new Password('intrex007'));
+var_dump($user);
