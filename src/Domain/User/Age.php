@@ -5,7 +5,7 @@ namespace App\Domain\User;
 use App\Domain\User\Exceptions\InvalidAgeRangeException;
 
 
-class AgeRange implements AgeRangeInterface
+class Age implements AgeInterface
 {
     private $age;
 

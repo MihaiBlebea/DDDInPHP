@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Domain\Money;
+namespace App\Domain\Price;
+
+use App\Domain\Price\Exceptions\{
+    InvalidMinPriceException,
+    InvalidCurrencyTypeException
+};
 
 
-class Price
+class Price implements PriceInterface
 {
     private $value;
 
@@ -14,40 +19,23 @@ class Price
     {
         if($value < 0)
         {
-            throw new \Exception('Price value should be greater then 0', 1);
+            throw new InvalidMinPriceException(1);
         }
         $this->value    = $value;
         $this->currency = $currency;
     }
 
-    public function __debugInfo()
-    {
-        return [
-            'value'         => $this->value,
-            'currency_sign' => $this->currency->sign
-        ];
-    }
-
-    public function __get($name)
-    {
-        if($name === 'currency_sign')
-        {
-            return $this->currency->sign;
-        }
-        throw new \Exception('Could not find requested attribute in this class', 1);
-    }
-
-    public function value()
+    public function getValue()
     {
         return $this->value;
     }
 
-    public function withMoneySign()
+    public function withCurrencySign()
     {
         return $this->currency->sign . $this->value;
     }
 
-    public function withMoneyName()
+    public function withCurrencyName()
     {
         return $this->currency->name . $this->value;
     }
@@ -88,7 +76,7 @@ class Price
     {
         if(!$this->compareSign($price))
         {
-            throw new \Exception('Currency should be the same for adding the two prices', 1);
+            throw new InvalidCurrencyTypeException(1);
         }
         return new $this($this->value + $price->value, $this->currency);
     }
@@ -97,7 +85,7 @@ class Price
     {
         if(!$this->compareSign($price))
         {
-            throw new \Exception('Currency should be the same for substracting the two prices', 1);
+            throw new InvalidCurrencyTypeException(1);
         }
         return new $this($this->value - $price->value, $this->currency);
     }

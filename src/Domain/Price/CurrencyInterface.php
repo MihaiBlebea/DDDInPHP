@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Money;
+namespace App\Domain\Price;
 
 
 interface CurrencyInterface

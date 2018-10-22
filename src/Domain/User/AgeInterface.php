@@ -3,7 +3,7 @@
 namespace App\Domain\User;
 
 
-interface AgeRangeInterface
+interface AgeInterface
 {
     public function __construct(Int $age);
 
