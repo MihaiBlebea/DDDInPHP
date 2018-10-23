@@ -3,7 +3,7 @@
 namespace App\Infrastructure;
 
 
-class Connection
+class Connection implements ConnectionInterface
 {
     private $conn;
 

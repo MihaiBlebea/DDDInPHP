@@ -17,14 +17,13 @@ class User
 
 
     public function __construct(
-        $first_name,
-        $last_name,
+        $name,
         EmailInterface $email,
         AgeInterface $age,
         PasswordInterface $password,
         UsernameInterface $username = null)
     {
-        $this->name     = $first_name . ' ' . $last_name;
+        $this->name     = $name;
         $this->username = $username;
         $this->email    = $email;
         $this->password = $password;
