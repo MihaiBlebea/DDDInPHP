@@ -16,7 +16,13 @@ class User
     private $age;
 
 
-    public function __construct($first_name, $last_name, $email, AgeInterface $age, PasswordInterface $password, Username $username = null)
+    public function __construct(
+        $first_name,
+        $last_name,
+        EmailInterface $email,
+        AgeInterface $age,
+        PasswordInterface $password,
+        UsernameInterface $username = null)
     {
         $this->name     = $first_name . ' ' . $last_name;
         $this->username = $username;
@@ -42,7 +48,7 @@ class User
 
     public function getAge()
     {
-        return $this->age->getAge();
+        return $this->age;
     }
 
     public function getPassword()

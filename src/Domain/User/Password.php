@@ -36,6 +36,11 @@ class Password implements PasswordInterface
         return $this->password;
     }
 
+    public function __toString()
+    {
+        return $this->getPassword();
+    }
+
     public function verifyPassword(String $password)
     {
         return password_verify($password, $this->password);

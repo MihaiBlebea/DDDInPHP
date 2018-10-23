@@ -9,5 +9,7 @@ interface AgeInterface
 
     public function getAge();
 
+    public function __toString();
+
     public function getAgeRange();
 }

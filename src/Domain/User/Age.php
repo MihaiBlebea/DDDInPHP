@@ -50,6 +50,11 @@ class Age implements AgeInterface
         return $this->age;
     }
 
+    public function __toString()
+    {
+        return (string) $this->getAge();
+    }
+
     public function getAgeRange()
     {
         foreach($this->age_ranges as $age_range)

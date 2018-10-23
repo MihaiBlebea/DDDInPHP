@@ -9,5 +9,7 @@ interface PasswordInterface
 
     public function getPassword();
 
+    public function __toString();
+
     public function verifyPassword(String $password);
 }

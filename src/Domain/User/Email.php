@@ -5,7 +5,7 @@ namespace App\Domain\User;
 use App\Domain\User\Exceptions\InvalidEmailException;
 
 
-class Email
+class Email implements EmailInterface
 {
     private $email;
 
@@ -22,6 +22,11 @@ class Email
     private function validateEmail(String $email)
     {
         return strpos($email, '@') !== false ? true : false;
+    }
+
+    public function __toString()
+    {
+        return $this->getEmail();
     }
 
     public function getEmail()

@@ -11,7 +11,9 @@
             "App\\": "src/"
         }
     },
-    "require": {},
+    "require": {
+
+    },
     "require-dev": {
         "phpunit/phpunit": "^7"
     },
