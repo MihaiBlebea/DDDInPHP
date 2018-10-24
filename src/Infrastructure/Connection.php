@@ -3,9 +3,9 @@
 namespace App\Infrastructure;
 
 
-class Connection implements ConnectionInterface
+class Connection
 {
-    private $conn;
+    public $conn;
 
 
     public function __construct($host, $username, $password, $dbname)

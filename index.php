@@ -18,11 +18,11 @@ use App\Domain\User\{
     Age,
     Password,
     Email,
-    Username,
-    UserRepo
+    Username
 };
 use App\Infrastructure\{
-    Connection
+    Connection,
+    UserRepo
 };
 
 
@@ -37,7 +37,7 @@ use App\Infrastructure\{
 //     new Password('intrex007')
 // );
 
-$conn = new Connection('0.0.0.0:8802', 'root', 'root', 'ddd_in_php');
+// $conn = new Connection('0.0.0.0:8802', 'root', 'root', 'ddd_in_php');
 $user_repo = new UserRepo($conn);
 // $user_repo->saveUser($user);
 

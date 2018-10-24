@@ -1,16 +1,24 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Infrastructure;
 
-use App\Infrastructure\ConnectionInterface;
+// use App\Infrastructure\ConnectionInterface;
+use App\Domain\User\{
+    User,
+    UserFactory
+};
 
 
-class UserRepo
+class UserRepo extends Connection
 {
-    public function __construct(ConnectionInterface $conn)
+    public function __construct()
     {
-        $this->conn = $conn->getConn();
-        // parent::__construct($host, $username, $password, $dbname);
+        $host     = '0.0.0.0:8802';
+        $username = 'root';
+        $password = 'root';
+        $dbname   = 'ddd_in_php';
+
+        parent::__construct($host, $username, $password, $dbname);
     }
 
     public function saveUser(User $user)
@@ -47,7 +55,7 @@ class UserRepo
             }
 
             return $collection;
-            
+
         } catch(\PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
