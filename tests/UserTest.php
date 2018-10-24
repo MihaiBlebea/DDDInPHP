@@ -6,7 +6,8 @@ use App\Domain\User\{
     Age,
     Email,
     Password,
-    Username
+    Username,
+    UserFactory
 };
 
 
@@ -25,6 +26,30 @@ class UserTest extends TestCase
                          new Password('intrex'),
                          Username::fromName('Mihai', 'Blebea'));
 
-        $this->assertEquals('' . $user->getAge(), 28);
+        $this->assertEquals((string) $user->getAge(), 28);
+    }
+
+    public function testUserFactory()
+    {
+        $name = 'Mihai Blebea';
+        $email = 'mihaiserban.blebea@gmail.com';
+        $age = 28;
+        $password = 'intrex';
+        $username = 'mihai.blebea';
+
+        $user = new User($name,
+                         new Email($email),
+                         new Age($age),
+                         new Password($password),
+                         new Username($username));
+
+        $user_from_factory = UserFactory::build($name, $email, $age, $password, $username);
+
+        $this->assertEquals((string) $user->getName(), (string) $user_from_factory->getName());
+        $this->assertEquals((string) $user->getEmail(), (string) $user_from_factory->getEmail());
+        $this->assertEquals((string) $user->getAge(), (string) $user_from_factory->getAge());
+        $this->assertEquals($user->getPassword()->verifyPassword($password), true);
+        $this->assertEquals($user_from_factory->getPassword()->verifyPassword($password), true);
+        $this->assertEquals((string) $user->getUsername(), (string) $user_from_factory->getUsername());
     }
 }
