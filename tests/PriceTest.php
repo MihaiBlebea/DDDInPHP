@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\Domain\Money\{
+use App\Domain\Price\{
     Currency,
     Price
 };

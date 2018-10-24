@@ -5,11 +5,11 @@ namespace App\Domain\User\Exceptions;
 use Exception;
 
 
-class InvalidNameException extends Exception
+class InvalidUsernameFormatException extends Exception
 {
     public function __construct($code = 0)
     {
-        $message = 'First or Last name should not contain spaces';
+        $message = 'Username should not have white spaces and must contain a dot';
         parent::__construct($message, $code, null);
     }
 }

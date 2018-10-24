@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\Domain\Money\Currency;
+use App\Domain\Price\Currency;
 
 
 class CurrencyTest extends TestCase
@@ -15,7 +15,7 @@ class CurrencyTest extends TestCase
     {
         $pound = new Currency('£', 'GBP');
 
-        $this->assertEquals($pound->name, 'GBP');
-        $this->assertEquals($pound->sign, '£');
+        $this->assertEquals($pound->getName(), 'GBP');
+        $this->assertEquals($pound->getSign(), '£');
     }
 }

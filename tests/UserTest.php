@@ -3,7 +3,10 @@
 use PHPUnit\Framework\TestCase;
 use App\Domain\User\{
     User,
-    AgeRange
+    Age,
+    Email,
+    Password,
+    Username
 };
 
 
@@ -16,8 +19,12 @@ class UserTest extends TestCase
 
     public function testUserAge()
     {
-        $user = new User('Mihai', 'Blebea', 'mihaiserban.blebea@gmail.com', new AgeRange(28), 'intrex');
+        $user = new User('Mihai Blebea',
+                         new Email('mihaiserban.blebea@gmail.com'),
+                         new Age(28),
+                         new Password('intrex'),
+                         Username::fromName('Mihai', 'Blebea'));
 
-        $this->assertEquals($user->getAge(), 28);
+        $this->assertEquals('' . $user->getAge(), 28);
     }
 }

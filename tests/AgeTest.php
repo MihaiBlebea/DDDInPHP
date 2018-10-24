@@ -1,11 +1,11 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\Domain\User\AgeRange;
+use App\Domain\User\Age;
 use App\Domain\User\Exceptions\InvalidAgeRangeException;
 
 
-class AgeRangeTest extends TestCase
+class AgeTest extends TestCase
 {
     private $age_range;
 
@@ -15,7 +15,7 @@ class AgeRangeTest extends TestCase
     public function setUp()
     {
         $this->age       = 28;
-        $this->age_range = new AgeRange($this->age);
+        $this->age_range = new Age($this->age);
     }
 
     public function testGetAgeAsInteger()
