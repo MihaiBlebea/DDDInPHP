@@ -12,12 +12,14 @@
         }
     },
     "require": {
-
     },
     "require-dev": {
         "phpunit/phpunit": "^7"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --bootstrap vendor/autoload.php tests"
+        "test": "./vendor/bin/phpunit --bootstrap vendor/autoload.php tests",
+        "docker-start": "docker-compose up -d --build",
+        "docker-stop": "docker-compose kill",
+        "docker-state": "docker-compose ps"
     }
 }

@@ -18,7 +18,10 @@ use App\Domain\User\{
     Age,
     Password,
     Email,
-    Username
+    Username,
+    UserFactory,
+    RegisterService,
+    LoginService
 };
 use App\Infrastructure\{
     Connection,
@@ -26,20 +29,18 @@ use App\Infrastructure\{
 };
 
 
-// $show = new Show(new Title('Lion king'), new Age(25), new Price(28, new Currency('£', 'GBP')));
-//
-// var_dump($show);
+$user = UserFactory::build(
+    null,
+    'Mihai Blebea',
+    'mihaiserban.blebea@gmail.com',
+    28,
+    'intrex007',
+    'mihai.blebea'
+);
 
-// $user = new User(
-//     'Mihai Blebea',
-//     new Email('mihaiserban.blebea2@gmail.com'),
-//     new Age(28),
-//     new Password('intrex007')
-// );
+$register_service = new RegisterService(new UserRepo());
+$register_service->execute($user);
 
-// $conn = new Connection('0.0.0.0:8802', 'root', 'root', 'ddd_in_php');
-$user_repo = new UserRepo($conn);
-// $user_repo->saveUser($user);
-
-$users = $user_repo->getUsersByName('Mihai Blebea');
-var_dump($users);
+$login_service = new LoginService(new UserRepo());
+$is_login = $login_service->execute(new Email('mihaiserban.blebea@gmail.com'), 'intrex007');
+var_dump($is_login);

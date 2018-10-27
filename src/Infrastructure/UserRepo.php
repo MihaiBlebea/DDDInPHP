@@ -2,14 +2,21 @@
 
 namespace App\Infrastructure;
 
-// use App\Infrastructure\ConnectionInterface;
 use App\Domain\User\{
     User,
-    UserFactory
+    Email,
+    Password,
+    HashedPassword,
+    Username,
+    Age,
+    UserId,
+    UserFactory,
+    UserRepoInterface,
+    EmailInterface
 };
 
 
-class UserRepo extends Connection
+class UserRepo extends Connection implements UserRepoInterface
 {
     public function __construct()
     {
@@ -23,7 +30,6 @@ class UserRepo extends Connection
 
     public function saveUser(User $user)
     {
-        // $name = $user->getName();
         try {
             $this->conn->beginTransaction();
             $sql = "INSERT INTO users (name, username, email, password, age)
@@ -45,16 +51,48 @@ class UserRepo extends Connection
             $stmt->execute();
 
             // set the resulting array to associative
-            $result = $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+            $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
             $collection = [];
             foreach($stmt->fetchAll() as $row)
             {
-                $user = UserFactory::build($row['name'], $row['email'], $row['age'], $row['password']);
+                $user = new User(
+                    new UserId($row['id']),
+                    $row['name'],
+                    new Email($row['email']),
+                    new Age($row['age']),
+                    new HashedPassword($row['password']),
+                    new Username($row['username'])
+                );
+
                 array_push($collection, $user);
             }
 
             return $collection;
+
+        } catch(\PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function getUserByEmail(EmailInterface $email)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = '" . $email . "'");
+            $stmt->execute();
+
+            // set the resulting array to associative
+            $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+            $result = $stmt->fetch();
+
+            return new User(
+                new UserId($result['id']),
+                $result['name'],
+                new Email($result['email']),
+                new Age($result['age']),
+                new HashedPassword($result['password']),
+                new Username($result['username'])
+            );
 
         } catch(\PDOException $e) {
             echo "Error: " . $e->getMessage();
