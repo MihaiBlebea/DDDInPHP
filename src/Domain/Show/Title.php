@@ -17,4 +17,9 @@ class Title implements TitleInterface
     {
         return $this->title;
     }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 }

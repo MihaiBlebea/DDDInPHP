@@ -9,6 +9,8 @@ interface PriceInterface
 
     public function getValue();
 
+    public function getCurrency();
+
     public function withCurrencySign();
 
     public function withCurrencyName();

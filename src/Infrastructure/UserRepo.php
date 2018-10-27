@@ -10,7 +10,6 @@ use App\Domain\User\{
     Username,
     Age,
     UserId,
-    UserFactory,
     UserRepoInterface,
     EmailInterface
 };

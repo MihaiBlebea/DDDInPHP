@@ -6,8 +6,10 @@ use App\Domain\Price\PriceInterface;
 use App\Domain\User\AgeInterface;
 
 
-class Show implements ShowInterface
+class Show
 {
+    private $id;
+
     private $title;
 
     private $age;
@@ -15,16 +17,21 @@ class Show implements ShowInterface
     private $price;
 
 
-    public function __construct(TitleInterface $title, AgeInterface $age, PriceInterface $price)
+    public function __construct(
+        ShowIdInterface $id,
+        TitleInterface $title,
+        AgeInterface $age,
+        PriceInterface $price)
     {
+        $this->id    = $id;
         $this->title = $title;
         $this->age   = $age;
         $this->price = $price;
     }
 
-    public static function createFrom(TitleInterface $title, AgeInterface $age, PriceInterface $price)
+    public function getId()
     {
-        return new static($title, $age, $price);
+        return $this->id;
     }
 
     public function getTitle()

@@ -7,7 +7,8 @@ require_once __DIR__ . '/bootstrap.php';
 
 use App\Domain\Show\{
     Show,
-    Title
+    Title,
+    ShowId
 };
 use App\Domain\Price\{
     Price,
@@ -23,7 +24,9 @@ use App\Domain\User\{
 };
 use App\Infrastructure\{
     Connection,
-    UserRepo
+    UserRepo,
+    ShowRepo,
+    ShowDAO
 };
 use App\Application\{
     RegisterService,
@@ -32,22 +35,30 @@ use App\Application\{
 };
 
 
-$user = UserFactory::build(
-    null,
-    'Mihai Blebea',
-    'mihaiserban.blebea@gmail.com',
-    28,
-    'intrex007',
-    'mihai.blebea'
-);
+// $user = UserFactory::build(
+//     null,
+//     'Mihai Blebea',
+//     'mihaiserban.blebea@gmail.com',
+//     28,
+//     'intrex007',
+//     'mihai.blebea'
+// );
+//
+// $register_service = new RegisterService(new UserRepo());
+// $register_service->execute($user);
+//
+// $login_service = new LoginService(new UserRepo());
+// $is_login = $login_service->execute(new Email('mihaiserban.blebea@gmail.com'), 'intrex007');
+// var_dump($is_login);
+// var_dump($_SESSION['auth']);
+//
+// LogoutService::execute();
+// var_dump($_SESSION['auth']);
 
-$register_service = new RegisterService(new UserRepo());
-$register_service->execute($user);
+$pound = new Currency('£', 'GBP');
+$little_prince = new Show(new ShowId(), new Title('Little Prince'), new Age(24), new Price(28, $pound));
+$shows = new ShowRepo();
+$shows->add($little_prince);
+$shows->withTitle(new Title('Little Prince'));
 
-$login_service = new LoginService(new UserRepo());
-$is_login = $login_service->execute(new Email('mihaiserban.blebea@gmail.com'), 'intrex007');
-var_dump($is_login);
-var_dump($_SESSION['auth']);
-
-LogoutService::execute();
-var_dump($_SESSION['auth']);
+var_dump($shows);

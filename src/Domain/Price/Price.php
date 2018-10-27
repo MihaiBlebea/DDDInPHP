@@ -30,6 +30,11 @@ class Price implements PriceInterface
         return $this->value;
     }
 
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
     public function withCurrencySign()
     {
         return $this->currency->sign . $this->value;
