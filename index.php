@@ -19,13 +19,16 @@ use App\Domain\User\{
     Password,
     Email,
     Username,
-    UserFactory,
-    RegisterService,
-    LoginService
+    UserFactory
 };
 use App\Infrastructure\{
     Connection,
     UserRepo
+};
+use App\Application\{
+    RegisterService,
+    LoginService,
+    LogoutService
 };
 
 
@@ -44,3 +47,7 @@ $register_service->execute($user);
 $login_service = new LoginService(new UserRepo());
 $is_login = $login_service->execute(new Email('mihaiserban.blebea@gmail.com'), 'intrex007');
 var_dump($is_login);
+var_dump($_SESSION['auth']);
+
+LogoutService::execute();
+var_dump($_SESSION['auth']);

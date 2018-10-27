@@ -1,6 +1,11 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Application;
+
+use App\Domain\User\{
+    UserRepoInterface,
+    EmailInterface
+};
 
 
 class LoginService
@@ -16,6 +21,12 @@ class LoginService
     public function execute(EmailInterface $email, String $password)
     {
         $user = $this->user_repo->getUserByEmail($email);
-        return $user->getPassword()->verifyPassword($password);
+
+        if($user->getPassword()->verifyPassword($password))
+        {
+            $_SESSION['auth'] = $user->getUsername();
+            return true;
+        }
+        return false;
     }
 }
