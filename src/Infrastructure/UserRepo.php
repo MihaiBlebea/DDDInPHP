@@ -83,15 +83,20 @@ class UserRepo extends Connection implements UserRepoInterface
             // set the resulting array to associative
             $stmt->setFetchMode(\PDO::FETCH_ASSOC);
             $result = $stmt->fetch();
-
-            return new User(
-                new UserId($result['id']),
-                $result['name'],
-                new Email($result['email']),
-                new Age($result['age']),
-                new HashedPassword($result['password']),
-                new Username($result['username'])
-            );
+            
+            if($result)
+            {
+                return new User(
+                    new UserId($result['id']),
+                    $result['name'],
+                    new Email($result['email']),
+                    new Age($result['age']),
+                    new HashedPassword($result['password']),
+                    new Username($result['username'])
+                );
+            } else {
+                return null;
+            }
 
         } catch(\PDOException $e) {
             echo "Error: " . $e->getMessage();

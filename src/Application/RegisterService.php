@@ -5,7 +5,8 @@ namespace App\Application;
 use App\Application\Exceptions\UserAlreadyRegisteredException;
 use App\Domain\User\{
     UserRepoInterface,
-    User
+    UserFactory,
+    Email
 };
 
 
@@ -19,13 +20,22 @@ class RegisterService
         $this->user_repo = $user_repo;
     }
 
-    public function execute(User $user)
+    public function execute(UserRegisterRequest $request)
     {
-        $user = $this->user_repo->getUserByEmail($user->getEmail());
+        $user = $this->user_repo->getUserByEmail(new Email($request->getEmail()));
         if($user)
         {
             throw new UserAlreadyRegisteredException((string) $user->getEmail(), 1);
+        } else {
+            $user = UserFactory::build(
+                null,
+                $request->getName(),
+                $request->getEmail(),
+                $request->getAge(),
+                $request->getPassword(),
+                $request->getUsername()
+            );
+            $this->user_repo->saveUser($user);
         }
-        $this->user_repo->saveUser($user);
     }
 }
