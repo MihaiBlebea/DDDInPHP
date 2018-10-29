@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure;
+namespace App\Infrastructure\Database;
 
 use App\Domain\Show\{
     Show,
