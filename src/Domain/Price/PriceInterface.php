@@ -11,6 +11,8 @@ interface PriceInterface
 
     public function getCurrency();
 
+    public function getDiscount();
+
     public function withCurrencySign();
 
     public function withCurrencyName();

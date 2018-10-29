@@ -14,8 +14,10 @@ class Price implements PriceInterface
 
     private $currency;
 
+    private $discount;
 
-    public function __construct(Int $value, CurrencyInterface $currency)
+
+    public function __construct(Int $value, CurrencyInterface $currency, DiscountInterface $discount)
     {
         if($value < 0)
         {
@@ -23,6 +25,7 @@ class Price implements PriceInterface
         }
         $this->value    = $value;
         $this->currency = $currency;
+        $this->discount = $discount;
     }
 
     public function getValue()
@@ -33,6 +36,11 @@ class Price implements PriceInterface
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 
     public function withCurrencySign()
