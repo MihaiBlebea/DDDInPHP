@@ -5,7 +5,7 @@ namespace App\Infrastructure\Database;
 use Exception;
 
 
-class Persistence
+class Persistence implements PersistenceInterface
 {
     private $connector;
 
@@ -36,6 +36,12 @@ class Persistence
     {
         $this->table = $table_name;
         return $this;
+    }
+
+    public function table(String $table_name)
+    {
+        $this->setTable($table_name);
+        return $this; 
     }
 
     private function connect()

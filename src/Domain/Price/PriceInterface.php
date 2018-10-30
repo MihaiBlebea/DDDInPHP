@@ -5,7 +5,7 @@ namespace App\Domain\Price;
 
 interface PriceInterface
 {
-    public function __construct(Int $value, CurrencyInterface $currency);
+    public function __construct(Int $value, CurrencyInterface $currency, DiscountInterface $discount);
 
     public function getValue();
 

@@ -3,7 +3,7 @@
 namespace App\Domain\Price;
 
 
-class Discount
+class Discount implements DiscountInterface
 {
     private $discount;
 

@@ -3,19 +3,28 @@
 namespace App\Infrastructure;
 
 use Ramsey\Uuid\Uuid;
+use App\Infrastructure\Database\PersistenceInterface;
 use App\Domain\Show\{
     Show,
     ShowIdInterface,
     ShowId,
     ShowRepoInterface,
-    TitleInterface
+    TitleInterface,
+    ShowFactory
 };
 
 
-class ShowRepo extends ShowDAO implements ShowRepoInterface
+class ShowRepo implements ShowRepoInterface
 {
+    private $persist;
+
     private $shows = [];
 
+
+    public function __construct(PersistenceInterface $persist)
+    {
+        $this->persist = $persist;
+    }
 
     public function nextIdentity()
     {
@@ -24,7 +33,14 @@ class ShowRepo extends ShowDAO implements ShowRepoInterface
 
     public function add(Show $show)
     {
-        $this->insert($this->nextIdentity(), $show);
+        $this->persist->table('shows')->create([
+            'id'            => (string) $show->getId(),
+            'title'         => (string) $show->getTitle(),
+            'age'           => (string) $show->getAge(),
+            'price'         => $show->getPrice()->getValue(),
+            'currency_name' => $show->getPrice()->getCurrency()->getName(),
+            'currency_sign' => $show->getPrice()->getCurrency()->getSign(),
+        ]);
     }
 
     public function addAll(Array $shows)
@@ -37,7 +53,7 @@ class ShowRepo extends ShowDAO implements ShowRepoInterface
 
     public function remove(Show $show)
     {
-        unset($this->shows[(string) $show->getId()]);
+        $this->persist->table('shows')->where('id', (string) $show->getId())->delete();
     }
 
     public function removeAll(Array $shows)
@@ -50,16 +66,34 @@ class ShowRepo extends ShowDAO implements ShowRepoInterface
 
     public function withId(ShowIdInterface $id)
     {
-        if(isset($this->shows[(string) $id]))
-        {
-            return $this->shows[(string) $id];
-        }
-        return null;
+        $show = $this->persist->table('shows')->where('id', (string) $id->getId())->selectOne();
+        return ShowFactory::build(
+            $show['id'],
+            $show['title'],
+            $show['age'],
+            $show['price'],
+            $show['currency_name'],
+            $show['currency_sign'],
+            $show['discount']
+        );
     }
 
     public function withTitle(TitleInterface $title)
     {
-        $this->shows = $this->select((string) $title);
+        $shows = $this->persist->table('shows')->where('title', (string) $title->getTitle())->select();
+        foreach($shows as $show)
+        {
+            $show_model = ShowFactory::build(
+                $show['id'],
+                $show['title'],
+                $show['age'],
+                $show['price'],
+                $show['currency_name'],
+                $show['currency_sign'],
+                $show['discount']
+            );
+            array_push($this->shows, $show_model);
+        }
         return $this->shows;
     }
 }
