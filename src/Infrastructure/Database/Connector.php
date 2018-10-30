@@ -6,32 +6,30 @@ namespace App\Infrastructure\Database;
 class Connector
 {
     private $host;
-    private $dbName;
-    private $user;
+
+    private $db_name;
+
+    private $username;
+
     private $password;
-    private $connector;
-    public function __construct($host, $dbName, $user, $password)
+
+
+    public function __construct($host, $db_name, $username, $password)
     {
-        $this->host = $host;
-        $this->dbName = $dbName;
-        $this->user = $user;
+        $this->host     = $host;
+        $this->db_name  = $db_name;
+        $this->username = $username;
         $this->password = $password;
-        $this->connector = $this->connect();
     }
-    public function setUp()
-    {
-    }
+
     public function connect()
     {
-        $connector = new \PDO("mysql:host=" . $this->host . ";dbname=" . $this->dbName . ";charset=utf8", $this->user, $this->password, array(\PDO::ATTR_PERSISTENT => true));
-        return $connector;
-    }
-    public function getConnector()
-    {
-        return $this->connector;
-    }
-    public function close()
-    {
-        $this->connector = null;
+        try {
+            $connect = new \PDO('mysql:host=' . $this->host . ';dbname=' . $this->db_name, $this->username, $this->password);
+            $connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            return $connect;
+        } catch(\PDOException $e) {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
     }
 }

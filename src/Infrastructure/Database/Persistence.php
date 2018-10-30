@@ -36,6 +36,7 @@ class Persistence
      * @var string
      */
     private $limitSchema = "";
+
     /**
      * Schema that holds the keys for the values that
      * that needs inserting or updated in the Database
@@ -59,6 +60,8 @@ class Persistence
      */
     private $updateSchema = "";
 
+    private $table;
+
     /**
      * Construct method requires an instance of
      * Framework\Database\Connector supplied by the Injector
@@ -67,7 +70,7 @@ class Persistence
      */
     public function __construct(Connector $connector)
     {
-        $this->connector = $connector->getConnector();
+        $this->connector = $connector;
     }
 
     public function getTable()
@@ -79,6 +82,11 @@ class Persistence
     {
         $this->table = $table_name;
         return $this;
+    }
+
+    private function connect()
+    {
+        return $this->connector->connect();
     }
 
     /**
@@ -124,10 +132,10 @@ class Persistence
      */
     public function create(array $array)
     {
-        $this->connect();
         $this->createSchema($array);
-        $statement = $this->connector->prepare("INSERT INTO " . $this->getTable() . " ( " . $this->insertKeySchema . " ) VALUES ( " . $this->insertValueSchema . " )")->execute();
-        $this->close();
+        $statement = $this->connect()
+                          ->prepare("INSERT INTO " . $this->getTable() . " ( " . $this->insertKeySchema . " ) VALUES ( " . $this->insertValueSchema . " )")
+                          ->execute();
         return $statement;
     }
 
@@ -141,12 +149,7 @@ class Persistence
         $insertKeySchema = "";
         $insertValueSchema = "";
         $i = 0;
-        /*
-        $array = array_filter($array, function($index)
-        {
-            return array_search($index, $this->editables) > -1;
-        }, ARRAY_FILTER_USE_KEY);
-        */
+
         foreach($array as $index => $item)
         {
             if($i < count($array) - 1)
@@ -231,14 +234,13 @@ class Persistence
      */
     public function selectOne()
     {
-        $this->connect();
         if($this->schema == "")
         {
             throw new Exception("No conditions where selected");
         }
-        $statement = $this->connector->query("SELECT * FROM " . $this->getTable() . " WHERE " . $this->schema)->fetchObject(get_called_class());
-        $this->close();
-        return $statement;
+        return $this->connect()
+                    ->query("SELECT * FROM " . $this->getTable() . " WHERE " . $this->schema)
+                    ->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -248,14 +250,13 @@ class Persistence
      */
     public function select()
     {
-        $this->connect();
         if($this->schema == "")
         {
-            throw new Exception("No conditions where selected");
+            throw new Exception("No conditions were selected");
         }
-        $statement = $this->connector->query("SELECT * FROM " . $this->getTable() . " WHERE " . $this->schema . $this->sortSchema . $this->limitSchema)->fetchAll(\PDO::FETCH_CLASS, get_called_class());
-        $this->close();
-        return $statement;
+        return $this->connect()
+                    ->query("SELECT * FROM " . $this->getTable() . " WHERE " . $this->schema . $this->sortSchema . $this->limitSchema)
+                    ->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -265,10 +266,9 @@ class Persistence
      */
     public function selectAll()
     {
-        $this->connect();
-        $statement = $this->connector->query("SELECT * FROM " . $this->getTable() . $this->sortSchema . $this->limitSchema)->fetchAll(\PDO::FETCH_CLASS, get_called_class());
-        $this->close();
-        return $statement;
+        return $this->connect()
+                    ->query("SELECT * FROM " . $this->getTable() . $this->sortSchema . $this->limitSchema)
+                    ->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -322,7 +322,6 @@ class Persistence
         $this->connect();
         if($this->schema == "")
         {
-            //throw new Exception("No conditions where selected");
             $this->schema = "id = '" . $this->id . "'";
         }
         $statement = $this->connector->prepare("DELETE FROM " . $this->getTable() . " WHERE " . $this->schema)->execute();
