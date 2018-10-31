@@ -12,6 +12,10 @@ use Framework\Router\{
     Router,
     Route
 };
+use App\Infrastructure\Database\{
+    Connector,
+    Persistence
+};
 
 // function dd($args)
 // {
@@ -22,6 +26,12 @@ use Framework\Router\{
 $container = new Container();
 $container->add(Request::class);
 $container->add(Router::class)->addArgument(Request::class);
+$container->add(Connector::class)->addArgument('0.0.0.0:8802')
+                                 ->addArgument('root')
+                                 ->addArgument('root')
+                                 ->addArgument('ddd_in_php');
+$container->add(Persistence::class)->addArgument(Connector::class);
+
 
 $request = $container->get(Request::class);
 $router  = $container->get(Router::class);

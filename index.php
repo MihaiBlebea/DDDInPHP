@@ -15,13 +15,14 @@ use App\Domain\Show\{
     Title
 };
 
-$host     = '0.0.0.0:8802';
-$username = 'root';
-$password = 'root';
-$dbname   = 'ddd_in_php';
-
-$conn = new Connector($host, $dbname, $username, $password);
-$persist = new Persistence($conn);
+// $host     = '0.0.0.0:8802';
+// $username = 'root';
+// $password = 'root';
+// $dbname   = 'ddd_in_php';
+//
+// $conn = new Connector($host, $dbname, $username, $password);
+// $persist = new Persistence($conn);
+$persist  = $container->get(Persistence::class);
 
 $show_repo = new ShowRepo($persist);
 // $shows = $show_repo->withTitle(new Title('Little Prince'));
