@@ -6,23 +6,27 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+use League\Container\Container;
 use Framework\Router\{
     Request,
     Router,
     Route
 };
 
-function dd($args)
-{
-    echo '<pre>'; echo json_encode($args, JSON_PRETTY_PRINT); echo '</pre>';
-    die();
-}
+// function dd($args)
+// {
+//     echo '<pre>'; echo json_encode($args, JSON_PRETTY_PRINT); echo '</pre>';
+//     die();
+// }
 
-$request = new Request();
+$container = new Container();
+$container->add(Request::class);
+$container->add(Router::class)->addArgument(Request::class);
+
+$request = $container->get(Request::class);
+$router  = $container->get(Router::class);
 
 
-$router = new Router($request);
-// var_dump($router);
 
 $route = new Route('ceva/ceva/:car', function($car) {
     var_dump('I drive a ' . $car);
