@@ -9,20 +9,36 @@ use App\Infrastructure\Database\{
     Connector,
     Persistence
 };
-use App\Infrastructure\ShowRepo;
+use App\Infrastructure\{
+    ShowRepo,
+    UserRepo
+};
 use App\Domain\Show\{
     ShowId,
     Title
 };
 
-// $host     = '0.0.0.0:8802';
-// $username = 'root';
-// $password = 'root';
-// $dbname   = 'ddd_in_php';
-//
-// $conn = new Connector($host, $dbname, $username, $password);
-// $persist = new Persistence($conn);
-$persist  = $container->get(Persistence::class);
+use App\Domain\User\{
+    UserId,
+    Username,
+    Email,
+    Password,
+    Age
+};
+
+
+$persist = $container->get(Persistence::class);
 
 $show_repo = new ShowRepo($persist);
-// $shows = $show_repo->withTitle(new Title('Little Prince'));
+$shows = $show_repo->withTitle(new Title('Little Prince'));
+
+$user_repo = new UserRepo($persist);
+$user = UserFactory::build(
+    $user_repo->nextIdentity(),
+    'Mihai Blebea',
+    'mihai.blebea',
+    'mihaiserban.blebea@gmail.com',
+    'intrex',
+    28
+);
+var_dump($user);

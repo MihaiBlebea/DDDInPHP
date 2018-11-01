@@ -16,4 +16,6 @@ interface ShowRepoInterface
     public function removeAll(Array $shows);
 
     public function withId(ShowIdInterface $id);
+
+    public function withTitle(TitleInterface $title);
 }

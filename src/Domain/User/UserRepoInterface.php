@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Domain\Show;
 
 
 interface UserRepoInterface
 {
-    public function __construct();
+    public function nextIdentity();
 
-    public function saveUser(User $user);
+    public function add(Show $show);
 
-    public function getUsersByName(String $name);
+    public function addAll(Array $shows);
 
-    public function getUserByEmail(EmailInterface $email);
+    public function remove(Show $show);
+
+    public function removeAll(Array $shows);
+
+    public function withId(ShowIdInterface $id);
 }
